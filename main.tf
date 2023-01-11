@@ -63,15 +63,15 @@ resource "aws_lambda_function" "lambda_function" {
     aws_iam_role_policy_attachment.GetSecretValue_access,
     aws_cloudwatch_log_group.lambda_log_group,
   ]
-  environment {
-    variables = {
-      UserSecret = "${var.user_secret}",
-      IntegrationID = "${random_id.kendra_unique_id.hex}",
-      RoleARN = "${aws_iam_policy.s3_GetObject_access.arn}",
-      AdminSecret = "${var.admin_secret}"
-      SchedulerSecret = "${var.internal_secret}"
-    }
-  }
+  # environment {
+  #   variables = {
+  #     UserSecret = "${var.user_secret}",
+  #     IntegrationID = "${random_id.kendra_unique_id.hex}",
+  #     RoleARN = "${aws_iam_policy.s3_GetObject_access.arn}",
+  #     AdminSecret = "${var.admin_secret}"
+  #     SchedulerSecret = "${var.internal_secret}"
+  #   }
+  # }
 
 }
 
@@ -542,16 +542,15 @@ resource "null_resource" "kendra_launch" {
   provisioner "local-exec" {
     command = "pip install boto3==1.0.0"
   }
-  provisioner "local-exec" {
-    command = "python3 kendra_launch.py ${var.admin_secret} ${random_id.kendra_unique_id.hex} ${var.region} ${data.aws_secretsmanager_secret_version.current_scheduler_secrets.secret_id}"
-  }
-  provisioner "local-exec" {
-    when    = destroy
-    command = "python3 kendra_destroy.py"
-  }
+  # provisioner "local-exec" {
+  #   command = "python3 kendra_launch.py ${var.admin_secret} ${random_id.kendra_unique_id.hex} ${var.region} ${data.aws_secretsmanager_secret_version.current_scheduler_secrets.secret_id}"
+  # }
+  # provisioner "local-exec" {
+  #   when    = destroy
+  #   command = "python3 kendra_destroy.py"
+  # }
     depends_on = [aws_iam_role.kendra_exec_role,
                   data.aws_secretsmanager_secret_version.current_scheduler_secrets]
-    # depends_on = [aws_iam_role.kendra_exec_role]
 
 }
 

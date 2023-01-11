@@ -1,3 +1,18 @@
+*.tfvars
+cmd
+.aws
+.gitignore
+*.tfstate*
+.terraform
+*.txt
+*.lock.*
+*.sh
+*.tfvars
+*.pem
+*.zip
+*copy*
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
