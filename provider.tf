@@ -1,6 +1,5 @@
 ########################################################
-##  Developed By  :   Pradeepta Kumar Sahu
-##  Project       :   Nasuni ElasticSearch Integration
+##  Project       :   Nasuni Kendra Integration
 ##  Organization  :   Nasuni Labs   
 #########################################################
 
@@ -8,7 +7,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.5"
+      version = "~> 3.76.0"
     }
   }
 }
