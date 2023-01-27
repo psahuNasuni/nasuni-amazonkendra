@@ -102,7 +102,7 @@ data "aws_iam_policy_document" "kendra-assume-role-policy" {
 
 resource "null_resource" "kendra_launch" {
    provisioner "local-exec" {
-    command = "sh kendra_launch.sh ${random_id.kendra_unique_id.hex} ${var.region} ${var.aws_profile} ${aws_iam_role.kendra_exec_role.arn}"
+    command = "sh kendra_launch.sh ${random_id.kendra_unique_id.hex} ${var.region} ${var.aws_profile} ${aws_iam_role.kendra_exec_role.arn} ${data.aws_secretsmanager_secret_version.admin_secret_kendra.id}"
   }
    provisioner "local-exec" {
     when    = destroy
