@@ -52,6 +52,41 @@ EOF
   }
 }
 
+resource "aws_iam_policy" "kendra_data_load" {
+  name        = "${local.resource_name_prefix}-data_load_policy-${random_id.kendra_unique_id.hex}"
+  path        = "/"
+  description = "IAM policy for data loading to Kendra"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "kendra:BatchPutDocument",
+                "kendra:BatchDeleteDocument"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+  tags = {
+    Name            = "${local.resource_name_prefix}-data_load_policy-${random_id.kendra_unique_id.hex}"
+    Application     = "Nasuni Analytics Connector with Kendra"
+    Developer       = "Nasuni"
+    PublicationType = "Nasuni Labs"
+    Version         = "V 0.1"
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "kendra_data_load_attachment" {
+  role       = aws_iam_role.kendra_exec_role.name
+  policy_arn = aws_iam_policy.kendra_data_load.arn
+}
+
 
 ############## IAM policy for enabling Kendra to access CloudWatch Logs ######################
 data "aws_iam_policy_document" "kendra-assume-role-policy" {
@@ -64,7 +99,6 @@ data "aws_iam_policy_document" "kendra-assume-role-policy" {
     }
   }
 }
-
 
 resource "null_resource" "kendra_launch" {
    provisioner "local-exec" {
