@@ -67,68 +67,12 @@ data "aws_iam_policy_document" "kendra-assume-role-policy" {
 
 
 resource "null_resource" "kendra_launch" {
-  provisioner "local-exec" {
-    command = "/bin/bash kendra_launch.sh ${random_id.kendra_unique_id.hex} ${var.region} ${var.aws_profile} ${aws_iam_role.kendra_exec_role.arn}"
+   provisioner "local-exec" {
+    command = "sh kendra_launch.sh"
   }
-  provisioner "local-exec" {
+   provisioner "local-exec" {
     when    = destroy
-    command = "/bin/bash kendra_destroy.sh"
+    command = "sh kendra_destroy.sh"
   }
-    depends_on = [aws_iam_role.kendra_exec_role,]
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
